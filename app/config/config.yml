@@ -65,7 +65,7 @@ doctrine:
                 type: annotation
                 prefix: Gedmo\Loggable\Entity
                 dir: "%kernel.root_dir%/../src/AppBundle/Entity/"
-                alias: GedmoLoggable # (optional) it will default to the name set for the mappingmapping
+                alias: GedmoLoggable
                 is_bundle: false
 
 stof_doctrine_extensions:

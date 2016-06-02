@@ -16,19 +16,23 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->get('doctrine')->getManager();
-        $ent = $em->getRepository('AppBundle:Project')
-            ->find(1);
-//        $ent = new Project();
-//        $ent->setName('name 1');
-//        $ent->setJiraKey('nm_1');
+//        $ent = $em->getRepository('AppBundle:Project')
+//            ->find(8);
+////        $ent = new Project();
+//        $ent->setName('name + 2');
+//        $ent->setJiraKey('nm_|2');
 //
 //        $em->persist($ent);
 //        $em->flush();
 
         /** @var LogEntryRepository $repo */
         $repo = $em->getRepository('ActivityLogBundle:LogEntry');
-        $logs = $repo->getLogEntriesQuery($ent)->getResult();
-
+        $ent = $em->getRepository('AppBundle:Project')
+            ->find(1);
+        $logs = [];
+        if ($ent) {
+            $logs = $repo->getLogEntriesQuery($ent)->getResult();
+        }
         $res = $this->get('activity_log.formatter')
             ->format($logs);
 

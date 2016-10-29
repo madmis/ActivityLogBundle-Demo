@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use ActivityLogBundle\Entity\LogEntry;
+use ActivityLogBundle\Entity\LogEntryInterface;
 use ActivityLogBundle\Service\ActivityLog\EntityFormatter\AbstractFormatter;
 use ActivityLogBundle\Service\ActivityLog\EntityFormatter\FormatterInterface;
 
@@ -15,7 +16,7 @@ class Project extends AbstractFormatter implements FormatterInterface
      * @param LogEntry $log
      * @return array
      */
-    public function format(LogEntry $log)
+    public function format(LogEntryInterface $log)
     {
         $result = $log->toArray();
 

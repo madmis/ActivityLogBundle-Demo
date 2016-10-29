@@ -1,0 +1,12 @@
+{% for flash_message in app.session.flashBag.get('notice') %}
+    <div class="flash-notice">
+        {{ flash_message }}
+    </div>
+{% endfor %}
+{% for flash_message in app.session.flashBag.get('success') %}
+    <div class="flash-success">
+        {{ flash_message }}
+    </div>
+{% endfor %}
+
+<a href="{{ path("login") }}">Go to "login"</a>

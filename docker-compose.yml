@@ -1,0 +1,43 @@
+version: '2'
+services:
+    db:
+        build: ./docker/database
+        ports:
+            - "5532:5432"
+        environment:
+            POSTGRES_DB: log_bundle
+            POSTGRES_USER: log_user
+            POSTGRES_PASSWORD: log_user
+        volumes:
+            - ./var/postgresql/:/var/lib/postgresql/data/
+        hostname: db
+
+    php:
+        build: ./docker/php
+        expose:
+            - "9000"
+        environment:
+            SYMFONY__ENV: dev
+            SYMFONY__DEBUG: 1
+            SYMFONY__DATABASE__HOST: db
+            SYMFONY__DATABASE__PORT: 5432
+            SYMFONY__DATABASE__NAME: gapi
+            SYMFONY__DATABASE__USER: gapi
+            SYMFONY__DATABASE__PASSWORD: gapi
+        volumes:
+            - ./:/var/www
+        links:
+            - db
+        tty: true
+        hostname: app
+
+    nginx:
+        build: ./docker/nginx
+        environment:
+            NGINX_HOST: alb.dev
+        ports:
+            - "8181:80"
+        links:
+            - php
+        volumes:
+            - ./var/logs/nginx:/var/log/nginx

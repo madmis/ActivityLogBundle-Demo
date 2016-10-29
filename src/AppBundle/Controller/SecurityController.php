@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,5 +34,37 @@ class SecurityController extends Controller
                 'error'         => $error,
             )
         );
+    }
+
+    /**
+     * @Route("/user/create", name="create_user")
+     */
+    public function createAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if (!$em->getRepository(User::class)->findOneBy(['name' => 'admin'])) {
+            $user = new User();
+            $user->setName('admin');
+            $password = $this->get('security.password_encoder')
+                ->encodePassword($user, 'admin');
+            $user->setPassword($password);
+
+
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                "User with 'admin' login and password was created!"
+            );
+        } else {
+            $this->addFlash(
+                'notice',
+                "User with 'admin' login now exists"
+            );
+        }
+
+        return $this->render('security/create.html.twig');
     }
 }
